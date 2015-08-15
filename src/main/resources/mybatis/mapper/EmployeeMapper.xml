@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xie.springcase.mybatis.domain.Employee">
+	<cache type="org.mybatis.caches.ehcache.LoggingEhcache" readOnly="true"/>
+	<!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/> -->
+    
+    <resultMap id="BaseResultMap" type="com.xie.springcase.mybatis.vo.EmployeeVO">
+        <id column="id" property="id" jdbcType="VARCHAR" />
+		<result column="birthday" property="birthday" jdbcType="DATE" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="photo" property="photo" jdbcType="BINARY" />
+		<result column="resume" property="resume" jdbcType="VARCHAR" />
+		<result column="status" property="status" jdbcType="INTEGER" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+		id, birthday, name, photo, resume, status
+	</sql>
+	
+    <sql id="Base_Where_Clause">
+		<where>
+			<trim prefixOverrides="and">
+				<if test="id != null"> and id = #{id}</if>
+				<if test="status != null">and status = #{status}</if>
+				<!-- 模糊查询 -->
+				<if test="name != null">and name like CONCAT("%",#{name},"%")</if>
+			</trim>
+		</where>
+		<if test="sorting != null">order by ${sorting}</if>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</sql>
+	
+    <!-- 查询总数 -->
+	<select id="selectCount" resultType="java.lang.Long" parameterType="java.util.Map">
+		select count(id)
+		from employee
+		<include refid="Base_Where_Clause" />
+	</select>
+    
+    <!-- 查询 -->
+	<select id="select" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from employee
+		<include refid="Base_Where_Clause" />
+	</select>
+	
+    <!-- 根据ID查询 -->
+	<select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from employee
+		where id = #{id}
+	</select>
+	
+	<!-- 根据ID删除 -->
+	<delete id="deleteById" parameterType="java.lang.String">
+		delete from employee
+		where id = #{id}
+	</delete>
+	
+	<!-- 删除 -->
+	<delete id="delete" parameterType="java.util.Map">
+		delete from employee
+		<include refid="Base_Where_Clause" />
+	</delete>
+
+	<!-- 添加 -->	
+	<insert id="insert" parameterType="com.xie.springcase.mybatis.domain.Employee">
+		insert into employee(
+			id, name, birthday, photo, resume, status
+		)
+		values (
+			#{id}, #{name}, #{birthday}, #{photo}, #{resume}, #{status}
+		)
+	</insert>
+	
+	
+	<!-- 通过ID更新 -->
+	<update id="updateByIdSelective" parameterType="com.xie.springcase.mybatis.domain.Employee">
+		update employee
+		<set>
+			<if test="name != null">name = #{name},</if>
+			<if test="birthday != null">birthday = #{birthday},</if>
+			<if test="photo != null">photo = #{photo},</if>
+			<if test="resume != null">resume = #{resume},</if>
+			<if test="status != null">status = #{status},</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<update id="updateById" parameterType="com.xie.springcase.mybatis.domain.Employee">
+		update employee
+		set name = #{name},
+		birthday = #{birthday},
+		photo = #{photo},
+		resume = #{resume},
+		status = #{status}
+		where id = #{id}
+	</update>
+</mapper>

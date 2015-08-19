@@ -140,6 +140,15 @@
 				<!-- <prop key="hibernate.use_sql_comments">true</prop> -->
 				<prop key="hibernate.show_sql">true</prop>
 				<prop key="hibernate.format_sql">false</prop><!-- 格式化SQL -->
+                <!-- HikariCP
+                <prop key="hibernate.connection.provider_class">com.zaxxer.hikari.hibernate.HikariConnectionProvider</prop>
+                <prop key="hibernate.hikari.dataSourceClassName">com.mysql.jdbc.jdbc2.optional.MysqlDataSource</prop>
+                <prop key="hibernate.hikari.dataSource.url">${db.url}</prop>
+                <prop key="hibernate.hikari.dataSource.user">${db.username}</prop>
+                <prop key="hibernate.hikari.dataSource.password">${db.password}</prop>
+                <prop key="hibernate.hikari.dataSource.cachePrepStmts">true</prop>
+                <prop key="hibernate.hikari.dataSource.prepStmtCacheSize">250</prop>
+                <prop key="hibernate.hikari.dataSource.prepStmtCacheSqlLimit">2048</prop> -->
 				<!-- ehcache -->
 				<prop key="hibernate.cache.provider_class">net.sf.ehcache.hibernate.EhCacheProvider</prop>
 				<prop key="hibernate.cache.region.factory_class">org.hibernate.cache.ehcache.EhCacheRegionFactory</prop>

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import com.xie.springcase.hibernate.dao.IEmployeeDAO;
 import com.xie.springcase.hibernate.entity.Employee;
 
-@Repository
+@Repository("HEmployeeDAO")
 public class EmployeeDAO extends BaseDAO<Employee> implements IEmployeeDAO {
 
 	protected EmployeeDAO() {

@@ -15,6 +15,7 @@ import java.util.Date;
  * 
  */
 @Entity
+@Table(name = "employee")
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @NamedQuery(name="Employee.findAll", query="SELECT e FROM Employee e")

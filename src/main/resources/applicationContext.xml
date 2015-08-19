@@ -190,6 +190,6 @@
 		<aop:advisor advice-ref="txAdvice" pointcut-ref="tranObjects" />
 	</aop:config>
 	<!-- 启用 annotation事务 -->
-    <tx:annotation-driven transaction-manager="mybatisTransactionManager"/>
+    <tx:annotation-driven transaction-manager="jpaTransactionManager"/>
 	<!-- Transaction end -->
 </beans>

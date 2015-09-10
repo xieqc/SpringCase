@@ -19,6 +19,7 @@ public class SysUser {
 
     @Id
     @Column(name = "id")
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     public Integer getId() {
         return id;
     }
@@ -81,7 +82,7 @@ public class SysUser {
         return result;
     }
 
-    @OneToOne
+    @OneToOne(cascade={CascadeType.PERSIST},fetch=FetchType.EAGER)
     @JoinColumn(name = "employee_id", referencedColumnName = "id")
     public Employee getEmployee() {
         return employee;
@@ -91,7 +92,7 @@ public class SysUser {
         this.employee = employee;
     }
 
-    @ManyToMany
+    @ManyToMany(fetch=FetchType.LAZY)
     @JoinTable(name = "cfg_user_role", catalog = "ums_db", schema = "", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false), inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id", nullable = false))
     public List<SysRole> getSysRoles() {
         return sysRoles;

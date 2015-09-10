@@ -13,7 +13,7 @@
 		default-autowire="byName" default-lazy-init="true">
 	
 	<description>Spring公共配置</description>
-	
+
 	<context:annotation-config />
 	<!-- 使用annotation 自动注册bean,并检查@Required,@Autowired的属性已被注入 -->
 	<context:component-scan base-package="com.xie.springcase">
@@ -29,15 +29,15 @@
 			</list>
 		</property>
 	</bean>
-	<!-- import dataSoucre config
-	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+	<!-- import dataSoucre config -->
+	<bean id="dataSource_DBCP" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName" value="com.mysql.jdbc.Driver"/>
 		<property name="url" value="${db.url}"/>
 		<property name="username" value="${db.username}"/>
 		<property name="password" value="${db.password}"/>
-	</bean> -->
+	</bean>
 	<!-- c3p0 -->
-	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+	<bean id="dataSource_C3P0" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
 		<!-- 指定连接数据库的驱动-->  
         <property name="driverClass" value="${jdbc.driverClass}"/>  
         <!-- 指定连接数据库的URL-->  
@@ -61,8 +61,8 @@
         <property name="maxStatements" value="${jdbc.maxStatements}"/> 
 	</bean>
 	<!-- Hikari Datasource -->
-	<bean id="dataSource_Hikari" class="com.zaxxer.hikari.HikariDataSource"  destroy-method="shutdown">
-		<!-- <property name="driverClassName" value="${db.driverClass}" /> --> <!-- 无需指定，除非系统无法自动识别 -->
+	<bean id="dataSource_HikariCP" class="com.zaxxer.hikari.HikariDataSource"  destroy-method="shutdown">
+		<property name="driverClassName" value="${db.driverClass}" />   <!-- 无需指定，除非系统无法自动识别 -->
 		<property name="jdbcUrl" value="${db.url}" />
 		<property name="username" value="${db.username}" />
 		<property name="password" value="${db.password}" />
@@ -79,7 +79,7 @@
 	</bean>
 	<!-- hibernate start -->
 	<bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
-		<property name="dataSource" ref="dataSource"/>
+		<property name="dataSource" ref="dataSource_HikariCP"/>
 		<property name="hibernateProperties">
 			<props>
 				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
@@ -107,7 +107,7 @@
 	
 	<!-- Mybatis start -->
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-		<property name="dataSource" ref="dataSource" />
+		<property name="dataSource" ref="dataSource_HikariCP" />
 		<property name="configLocation" value="classpath:sqlMapConfig.xml"></property>
 		<property name="mapperLocations" value="classpath:mybatis/mapper/**/*Mapper.xml"></property>
 	</bean>
@@ -126,7 +126,7 @@
         <property name="database" value="MYSQL"/>
     </bean>
     <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
-        <property name="dataSource" ref="dataSource"/>
+        <property name="dataSource" ref="dataSource_HikariCP"/>
         <property name="persistenceProvider" ref="persistenceProvider"/>
         <property name="jpaDialect" ref="jpaDialect" />
         <property name="jpaVendorAdapter" ref="jpaVendorAdapter"/>
@@ -142,13 +142,18 @@
 				<prop key="hibernate.format_sql">false</prop><!-- 格式化SQL -->
                 <!-- HikariCP
                 <prop key="hibernate.connection.provider_class">com.zaxxer.hikari.hibernate.HikariConnectionProvider</prop>
-                <prop key="hibernate.hikari.dataSourceClassName">com.mysql.jdbc.jdbc2.optional.MysqlDataSource</prop>
+                <prop key="hibernate.hikari.dataSourceClassName">${db.driverClass2}</prop>
                 <prop key="hibernate.hikari.dataSource.url">${db.url}</prop>
                 <prop key="hibernate.hikari.dataSource.user">${db.username}</prop>
                 <prop key="hibernate.hikari.dataSource.password">${db.password}</prop>
                 <prop key="hibernate.hikari.dataSource.cachePrepStmts">true</prop>
                 <prop key="hibernate.hikari.dataSource.prepStmtCacheSize">250</prop>
-                <prop key="hibernate.hikari.dataSource.prepStmtCacheSqlLimit">2048</prop> -->
+                <prop key="hibernate.hikari.dataSource.prepStmtCacheSqlLimit">2048</prop>
+                <prop key="hibernate.hikari.maximumPoolSize">15</prop>
+                <prop key="hibernate.hikari.minimumIdle">20</prop>
+                <prop key="hibernate.hikari.connectionTimeout">30000</prop>
+                <prop key="hibernate.hikari.idleTimeout">600000</prop>
+                <prop key="hibernate.hikari.maxLifetime">1800000</prop> -->
 				<!-- ehcache -->
 				<prop key="hibernate.cache.provider_class">net.sf.ehcache.hibernate.EhCacheProvider</prop>
 				<prop key="hibernate.cache.region.factory_class">org.hibernate.cache.ehcache.EhCacheRegionFactory</prop>
@@ -164,14 +169,14 @@
 	<!-- JPA end -->
 	
 	<!-- Transaction start -->
-	<!-- hibernate4 事务代理 -->
+	<!-- hibernate4 事务代理
 	<bean id="hiberateTransactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
 		<property name="sessionFactory" ref="sessionFactory" />
-	</bean>
-	<!-- mybatis 事务代理 -->
+	</bean> -->
+	<!-- mybatis 事务代理
 	<bean id="mybatisTransactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-		<property name="dataSource" ref="dataSource"/>
-	</bean>
+		<property name="dataSource" ref="dataSource_HikariCP"/>
+	</bean> -->
 	<!-- jpa 事务代理 -->
 	<bean id="jpaTransactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
 		<property name="entityManagerFactory" ref="entityManagerFactory" />
@@ -189,7 +194,7 @@
 		<aop:pointcut id="tranObjects" expression="execution(* com.xie.springcase.service..*(..))" />
 		<aop:advisor advice-ref="txAdvice" pointcut-ref="tranObjects" />
 	</aop:config>
-	<!-- 启用 annotation事务 -->
-    <tx:annotation-driven transaction-manager="jpaTransactionManager"/>
+	<!-- 启用 annotation事务
+    <tx:annotation-driven transaction-manager="jpaTransactionManager"/> -->
 	<!-- Transaction end -->
 </beans>

@@ -50,7 +50,7 @@ public class DaoTest {
         /* delete
         b_employeeDao.deleteById("100022"); */
 //		System.out.println(b_employeeDao.selectOne(employee).getName());
-		/* query */
+        /* query */
         PageRequest pageable = new PageRequest(1, 5);
         Page<com.xie.springcase.mybatis.domain.Employee> pagelist = b_employeeDao.selectPageList(null, pageable);
         System.out.println(pagelist.getSize());
@@ -99,10 +99,12 @@ public class DaoTest {
 		funct.setStatus((byte)1);
 		sysFunctService.save(funct);*/
 
+//		List<Employee> employeeList = j_employeeDao.getVOByStatus((byte) 1);
 //		System.out.println(j_employeeDao.findById("100001").getName());
-//        System.out.println(sysUserService.findByName("zhangsan").getSysDept().getId());
-		List<SysRole> roleList = j_sysRoleDao.findBySysUserId(1);
+//      System.out.println(sysUserService.findByName("zhangsan").getSysDept().getId());
+		List<String> roleList = j_sysRoleDao.getRoleNameListBySysUserId(1);
 		System.out.println(roleList.size());
+//		System.out.println(j_sysUserDao.fetchRoleByName("zhangsan").getSysRoles().size());
 		/* 自定义查询
 		List<Employee> empList = j_employeeDao.getCustomListByMap(null);
 		List<Employee> empList2 = j_employeeDao.getCustomListByMap(null);

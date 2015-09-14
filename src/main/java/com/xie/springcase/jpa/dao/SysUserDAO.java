@@ -22,6 +22,6 @@ public interface SysUserDAO extends JpaRepository<SysUser,Integer> {
 
     SysUser findByName(String name);
 
-    @Query("select a from SysUser a left join a.sysRoles where a.name=?1")
+    @Query("select a from SysUser a left join fetch a.sysRoles where a.name=?1")
     SysUser fetchRoleByName(String name);
 }

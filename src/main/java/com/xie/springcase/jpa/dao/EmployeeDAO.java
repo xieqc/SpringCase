@@ -21,6 +21,9 @@ public interface EmployeeDAO extends JpaRepository<Employee, String>,EmployeeDAO
 	
 	@Query(value="select a.id, a.birthday, a.name, a.photo, a.resume, a.status from employee a where a.id = :id", nativeQuery = true)
 	public Object getFieldById(@Param("id")String id);
+
+	@Query("select new com.xie.springcase.hibernate.entity.Employee(a.id,a.name,a.status) from Employee a where a.status = ?1")
+	public List<Employee> getVOByStatus(byte status);
 	
 	@Query("select a from Employee a where a.status = :status")
 	public List<Object[]> getFieldByStatus(@Param("status")byte status);

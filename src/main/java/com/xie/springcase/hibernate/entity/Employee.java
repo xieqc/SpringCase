@@ -40,6 +40,12 @@ public class Employee implements Serializable {
 	public Employee() {
 	}
 
+	public Employee(String id, String name, byte status) {
+		this.id = id;
+		this.name = name;
+		this.status = status;
+	}
+
 	public void setBirthday(java.sql.Date birthday) {
 		this.birthday = birthday;
 	}

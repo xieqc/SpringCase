@@ -22,4 +22,9 @@ public class SysRoleService implements ISysRoleService {
         return j_sysRoleDAO.save(role);
     }
 
+    @Transactional(readOnly = true)
+    public List<String> getRoleNameListBySysUserId(Integer userId) {
+        return j_sysRoleDAO.getRoleNameListBySysUserId(userId);
+    }
+
 }

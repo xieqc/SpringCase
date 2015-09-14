@@ -15,6 +15,6 @@ import java.util.List;
 @RepositoryDefinition(domainClass = SysRole.class, idClass = Integer.class)
 public interface SysRoleDAO extends JpaRepository<SysRole,Integer> {
 
-    @Query(value="select r.* from sys_role r,sys_user u,cfg_user_role c where c.role_id=r.id and c.user_id=u.id and u.id=?1", nativeQuery = true)
-    List<SysRole> findBySysUserId(Integer userId);
+    @Query(value="select r.name from sys_role r,sys_user u,cfg_user_role c where c.role_id=r.id and c.user_id=u.id and u.id=?1", nativeQuery = true)
+    List<String> getRoleNameListBySysUserId(Integer userId);
 }

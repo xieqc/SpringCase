@@ -13,15 +13,14 @@
 
 <h2>权限列表</h2>
 <shiro:authenticated>用户已经登录显示此内容</shiro:authenticated>
-<shiro:hasRole name="manager">manager角色登录显示此内容</shiro:hasRole>
-<shiro:hasRole name="admin">admin角色登录显示此内容</shiro:hasRole>
-<shiro:hasRole name="normal">normal角色登录显示此内容</shiro:hasRole>
+<shiro:hasRole name="管理员">管理员角色登录显示此内容</shiro:hasRole>
+<shiro:hasRole name="普通用户">普通用户角色登录显示此内容</shiro:hasRole>
 
-<shiro:hasAnyRoles name="manager,admin">**manager or admin 角色用户登录显示此内容**</shiro:hasAnyRoles>
+<shiro:hasAnyRoles name="管理员,普通用户">**管理员 or 普通用户 角色用户登录显示此内容**</shiro:hasAnyRoles>
 <shiro:principal/>-显示当前登录用户名
-<shiro:hasPermission name="add">add权限用户显示此内容</shiro:hasPermission>
+<shiro:hasPermission name="功能一">功能一权限用户显示此内容</shiro:hasPermission>
 <shiro:hasPermission name="user:query">query权限用户显示此内容<shiro:principal/></shiro:hasPermission>
-<shiro:lacksPermission name="user:del"> 不具有user:del权限的用户显示此内容 </shiro:lacksPermission>
+<shiro:lacksPermission name="功能一"> 不具有功能一权限的用户显示此内容 </shiro:lacksPermission>
 <ul>
     <c:forEach items="${userList }" var="user">
         <li>用户名：${user.name }----

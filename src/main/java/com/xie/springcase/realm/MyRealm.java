@@ -3,6 +3,7 @@ package com.xie.springcase.realm;
 import com.xie.springcase.hibernate.entity.SysFunct;
 import com.xie.springcase.hibernate.entity.SysRole;
 import com.xie.springcase.hibernate.entity.SysUser;
+import com.xie.springcase.service.ISysFunctService;
 import com.xie.springcase.service.ISysRoleService;
 import com.xie.springcase.service.ISysUserService;
 import com.xie.springcase.service.impl.SysUserService;
@@ -36,6 +37,8 @@ public class MyRealm extends AuthorizingRealm {
     private ISysUserService sysUserService;
     @Resource(name="sysRoleService")
     private ISysRoleService sysRoleService;
+    @Resource(name="sysFunctService")
+    private ISysFunctService sysFunctService;
 
     /**
      * 为当前登录的Subject授予角色和权限
@@ -54,22 +57,8 @@ public class MyRealm extends AuthorizingRealm {
         //从数据库中获取当前登录用户的详细信息
         SysUser user = sysUserService.findByName(currentUsername);
         if (null != user) {
-            //实体类User中包含有用户角色的实体类信息
-            if (null != user.getSysRoles() && user.getSysRoles().size() > 0) {
-                //获取当前登录用户的角色
-                for (SysRole role : user.getSysRoles()) {
-                    roleList.add(role.getName());
-                    //实体类Role中包含有角色权限的实体类信息
-                    if (null != role.getSysFuncts() && role.getSysFuncts().size() > 0) {
-                        //获取权限
-                        for (SysFunct funct : role.getSysFuncts()) {
-                            if (!StringUtils.isEmpty(funct.getName())) {
-                                permissionList.add(funct.getName());
-                            }
-                        }
-                    }
-                }
-            }
+            roleList = sysRoleService.getRoleNameListBySysUserId(user.getId());
+            permissionList = sysFunctService.getFunctNameListBySysUserId(user.getId());
         } else {
             throw new AuthorizationException();
         }
@@ -78,17 +67,6 @@ public class MyRealm extends AuthorizingRealm {
         simpleAuthorInfo.addRoles(roleList);
         simpleAuthorInfo.addStringPermissions(permissionList);
         return simpleAuthorInfo;
-        /*
-        SimpleAuthorizationInfo simpleAuthorInfo = new SimpleAuthorizationInfo();
-        //实际中可能会像上面注释的那样从数据库取得
-        if (null != currentUsername && "mike".equals(currentUsername)) {
-            //添加一个角色,不是配置意义上的添加,而是证明该用户拥有admin角色
-            simpleAuthorInfo.addRole("admin");
-            //添加权限
-            simpleAuthorInfo.addStringPermission("admin:manage");
-            System.out.println("已为用户[mike]赋予了[admin]角色和[admin:manage]权限");
-            return simpleAuthorInfo;
-        } */
         //若该方法什么都不做直接返回null的话,就会导致任何用户访问/admin/listUser.jsp时都会自动跳转到unauthorizedUrl指定的地址
         //详见applicationContext.xml中的<bean id="shiroFilter">的配置
         //return null;

@@ -1,0 +1,22 @@
+src（源码）
+├─springcase（Spring集成案例）
+├─javacase（Java案例）
+│  ├─algorithm（算法）
+│  │  ├─search（查找）
+│  │  └─sort（排序）
+│  ├─concurrent（并发集合）
+│  ├─groovy
+│  ├─memcache（缓存）
+│  │  ├─memcached
+│  │  └─redis
+│  ├─net（网络应用）
+│  │  ├─socket
+│  │  ├─netty
+│  │  └─mina
+│  ├─objectClass（对象与类）
+│  ├─programStruct（程序结构）
+│  │  ├─controlFlow（控制流程）
+│  │  └─dataType（数据类型）
+│  └─util（工具）
+│
+└─README

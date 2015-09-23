@@ -1,20 +1,17 @@
 package com.xie.springcase.test;
 
-import java.util.Date;
 import java.util.List;
 
-import com.xie.springcase.hibernate.entity.*;
 import com.xie.springcase.jpa.dao.*;
+import com.xie.springcase.script.ICalculator;
 import com.xie.springcase.service.*;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 
 import com.xie.springcase.hibernate.dao.IEmployeeDAO;
-import com.xie.springcase.jpa.util.NativeSql;
 
 public class DaoTest {
     public static ApplicationContext ac = new ClassPathXmlApplicationContext(new String[]{"applicationContext.xml"});
@@ -30,6 +27,7 @@ public class DaoTest {
     public static ISysUserService sysUserService = (ISysUserService) ac.getBean("sysUserService");
     public static ISysRoleService sysRoleService = (ISysRoleService) ac.getBean("sysRoleService");
     public static ISysFunctService sysFunctService = (ISysFunctService) ac.getBean("sysFunctService");
+	public static ICalculator calculator = (ICalculator) ac.getBean("calculator");
 
     @Test
     public void hibernateTest() {
@@ -125,4 +123,17 @@ public class DaoTest {
 		System.out.println((objList.get(0)).length); */
 
     }
+
+	@Test
+	public void groovyTest() {
+		while(true) {
+			System.out.println(calculator.add(2,3));
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+
+	}
 }

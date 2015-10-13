@@ -29,6 +29,7 @@ public class socketClientFrame extends JFrame {
     private Scanner in;
     private PrintWriter out;
     private SocketChannel channel;
+    private Boolean runStatus = true;
 
     public socketClientFrame() {
         setSize(WIDTH, HEIGHT);
@@ -59,8 +60,14 @@ public class socketClientFrame extends JFrame {
         {
             public void actionPerformed(ActionEvent event)
             {
-                out.close();
-                connectThread.interrupt();
+                if (out != null) out.close();
+                try {
+                    runStatus = false;
+                    channel.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+//                connectThread.interrupt();
                 startButton.setEnabled(true);
                 cancelButton.setEnabled(false);
                 socketKey.setEnabled(false);
@@ -108,9 +115,10 @@ public class socketClientFrame extends JFrame {
         try {
             channel = SocketChannel.open(new InetSocketAddress("localhost", 4700));
             messages.append("new connect...\n");
+            runStatus = true;
             try {
                 in = new Scanner(channel);
-                while (true) {
+                while (runStatus) {
                     if (in.hasNextLine())
                     {
                         String line = in.nextLine();
@@ -126,7 +134,7 @@ public class socketClientFrame extends JFrame {
             }
         }
         catch (IOException e) {
-            messages.append("\nInterruptibleSocketTest.connect: " + e +"\n");
+            messages.append("\nIOException: " + e +"\n");
         }
         catch (InterruptedException e) {
             messages.append("\nInterruptibleSocketTest.connect: " + e +"\n");

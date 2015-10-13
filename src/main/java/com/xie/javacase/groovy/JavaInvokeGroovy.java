@@ -24,7 +24,7 @@ public class JavaInvokeGroovy {
         ClassLoader cl = new JavaInvokeGroovy().getClass().getClassLoader();
         GroovyClassLoader groovyCl = new GroovyClassLoader(cl);
         try {
-            Class groovyClass = groovyCl.parseClass(new File("src/groovy/GroovyTest.groovy"));
+            Class groovyClass = groovyCl.parseClass(new File("src/main/java/com/xie/javacase/groovy/GroovyTest.groovy"));
             IGroovyTest gt = (IGroovyTest) groovyClass.newInstance();
             gt.SayHelloWorld();
         } catch (Exception e) {
@@ -39,7 +39,7 @@ public class JavaInvokeGroovy {
     public void ClassInvoke() {
         JavaInvokeGroovy dynamicGroovy = new JavaInvokeGroovy();
         Object[] params = {new Integer(2)};
-        Object result = dynamicGroovy.invokeScriptMethod("src/groovy/GroovyTest.groovy", "doit", params);
+        Object result = dynamicGroovy.invokeScriptMethod("src/main/java/com/xie/javacase/groovy/GroovyTest.groovy", "doit", params);
         System.out.println(result);
 //        System.out.println(dynamicGroovy.getProperty("x"));
     }

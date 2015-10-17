@@ -2,7 +2,6 @@ package com.xie.springcase.test;
 
 import java.util.List;
 
-import com.xie.javacase.protobuf.AddressBookProtos;
 import com.xie.springcase.jpa.dao.*;
 import com.xie.springcase.script.ICalculator;
 import com.xie.springcase.service.*;

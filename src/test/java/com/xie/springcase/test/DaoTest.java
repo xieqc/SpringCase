@@ -2,9 +2,13 @@ package com.xie.springcase.test;
 
 import java.util.List;
 
+import com.xie.javacase.protobuf.AddressBookProtos;
 import com.xie.springcase.jpa.dao.*;
 import com.xie.springcase.script.ICalculator;
 import com.xie.springcase.service.*;
+import net.sf.ehcache.Cache;
+import net.sf.ehcache.CacheManager;
+import net.sf.ehcache.Element;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -28,6 +32,7 @@ public class DaoTest {
     public static ISysRoleService sysRoleService = (ISysRoleService) ac.getBean("sysRoleService");
     public static ISysFunctService sysFunctService = (ISysFunctService) ac.getBean("sysFunctService");
 	public static ICalculator calculator = (ICalculator) ac.getBean("calculator");
+	public static CacheManager ehcacheManager = (CacheManager) ac.getBean("ehcacheManager");
 
     @Test
     public void hibernateTest() {
@@ -134,6 +139,21 @@ public class DaoTest {
 				e.printStackTrace();
 			}
 		}
+
+	}
+
+	@Test
+	public void ehcahceTest() {
+		// 添加数据到缓存中
+		ehcacheManager.addCache("demoCache");
+		Cache cache = ehcacheManager.getCache("demoCache");
+		Element element = new Element("key", "val");
+		cache.put(element);
+		System.out.println(cache.getSize());
+	}
+
+	@Test
+	public void protobufTest() {
 
 	}
 }

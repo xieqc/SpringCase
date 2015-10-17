@@ -91,12 +91,25 @@ public class socketClientFrame extends JFrame {
         sendButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
                 try {
+                    channel.socket().sendUrgentData(0xFF); //发送心跳包
                     out = new PrintWriter(channel.socket().getOutputStream());	//由Socket对象得到输出流，并构造PrintWriter对象
                     out.println(socketKey.getText() + ":" + input.getText());	//将从系统标准输入读入的字符串输出到Server
                     out.flush();	//刷新输出流，使Server马上收到该字符串
                     input.setText("");
                 } catch (IOException e) {
                     e.printStackTrace();
+                    if (out != null) out.close();
+                    try {
+                        runStatus = false;
+                        channel.close();
+                    } catch (IOException e2) {
+                        e2.printStackTrace();
+                    }
+                    startButton.setEnabled(true);
+                    cancelButton.setEnabled(false);
+                    socketKey.setEnabled(false);
+                    input.setEnabled(false);
+                    sendButton.setEnabled(false);
                 }
             }
         });
@@ -124,6 +137,7 @@ public class socketClientFrame extends JFrame {
                         String line = in.nextLine();
                         messages.append(line);
                         messages.append("\n");
+                        messages.setSelectionStart(messages.getText().length());
                     }
                     else Thread.sleep(100);
                 }

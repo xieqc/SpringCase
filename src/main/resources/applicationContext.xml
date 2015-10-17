@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:context="http://www.springframework.org/schema/context" 
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:tx="http://www.springframework.org/schema/tx"
 	xmlns:jpa="http://www.springframework.org/schema/data/jpa" xmlns:lang="http://www.springframework.org/schema/lang"
 	xsi:schemaLocation="
@@ -12,7 +12,7 @@
 		http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
 		http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang.xsd"
 		default-autowire="byName" default-lazy-init="true">
-	
+
 	<description>Spring公共配置</description>
 
 	<context:annotation-config />
@@ -39,27 +39,27 @@
 	</bean>
 	<!-- c3p0 -->
 	<bean id="dataSource_C3P0" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
-		<!-- 指定连接数据库的驱动-->  
-        <property name="driverClass" value="${jdbc.driverClass}"/>  
-        <!-- 指定连接数据库的URL-->  
-        <property name="jdbcUrl" value="${jdbc.jdbcUrl}"/>  
-        <!-- 指定连接数据库的用户名-->  
-        <property name="user" value="${jdbc.user}"/>  
-        <!-- 指定连接数据库的密码-->  
-        <property name="password" value="${jdbc.password}"/>  
-        <!-- 指定连接池中保留的最大连接数. Default:15-->  
-        <property name="maxPoolSize" value="${jdbc.maxPoolSize}"/>  
-        <!-- 指定连接池中保留的最小连接数-->  
-        <property name="minPoolSize" value="${jdbc.minPoolSize}"/>  
-        <!-- 指定连接池的初始化连接数  取值应在minPoolSize 与 maxPoolSize 之间.Default:3-->  
-        <property name="initialPoolSize" value="${jdbc.initialPoolSize}"/>  
-        <!-- 最大空闲时间,60秒内未使用则连接被丢弃。若为0则永不丢弃。 Default:0-->  
-        <property name="maxIdleTime" value="${jdbc.maxIdleTime}"/>  
-        <!-- 当连接池中的连接耗尽的时候c3p0一次同时获取的连接数. Default:3-->  
-        <property name="acquireIncrement" value="${jdbc.acquireIncrement}"/>  
+		<!-- 指定连接数据库的驱动-->
+        <property name="driverClass" value="${jdbc.driverClass}"/>
+        <!-- 指定连接数据库的URL-->
+        <property name="jdbcUrl" value="${jdbc.jdbcUrl}"/>
+        <!-- 指定连接数据库的用户名-->
+        <property name="user" value="${jdbc.user}"/>
+        <!-- 指定连接数据库的密码-->
+        <property name="password" value="${jdbc.password}"/>
+        <!-- 指定连接池中保留的最大连接数. Default:15-->
+        <property name="maxPoolSize" value="${jdbc.maxPoolSize}"/>
+        <!-- 指定连接池中保留的最小连接数-->
+        <property name="minPoolSize" value="${jdbc.minPoolSize}"/>
+        <!-- 指定连接池的初始化连接数  取值应在minPoolSize 与 maxPoolSize 之间.Default:3-->
+        <property name="initialPoolSize" value="${jdbc.initialPoolSize}"/>
+        <!-- 最大空闲时间,60秒内未使用则连接被丢弃。若为0则永不丢弃。 Default:0-->
+        <property name="maxIdleTime" value="${jdbc.maxIdleTime}"/>
+        <!-- 当连接池中的连接耗尽的时候c3p0一次同时获取的连接数. Default:3-->
+        <property name="acquireIncrement" value="${jdbc.acquireIncrement}"/>
         <!-- JDBC的标准,用以控制数据源内加载的PreparedStatements数量。  
-        但由于预缓存的statements属于单个connection而不是整个连接池所以设置这个参数需要考虑到多方面的因数.如果maxStatements与maxStatementsPerConnection均为0,则缓存被关闭。Default:0-->  
-        <property name="maxStatements" value="${jdbc.maxStatements}"/> 
+        但由于预缓存的statements属于单个connection而不是整个连接池所以设置这个参数需要考虑到多方面的因数.如果maxStatements与maxStatementsPerConnection均为0,则缓存被关闭。Default:0-->
+        <property name="maxStatements" value="${jdbc.maxStatements}"/>
 	</bean>
 	<!-- Hikari Datasource -->
 	<bean id="dataSource_HikariCP" class="com.zaxxer.hikari.HikariDataSource"  destroy-method="shutdown">
@@ -105,7 +105,7 @@
 		</property>
 	</bean>
 	<!-- Hibernate end -->
-	
+
 	<!-- Mybatis start -->
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource_HikariCP" />
@@ -117,7 +117,7 @@
 		<constructor-arg index="0" ref="sqlSessionFactory" />
 	</bean>
 	<!-- Mybatis end -->
-	
+
 	<!-- JPA start -->
 	<bean id="persistenceProvider" class="org.hibernate.ejb.HibernatePersistence" /><!-- 用于指定持久化实现厂商类 -->
 	<bean id="jpaDialect" class="org.springframework.orm.jpa.vendor.HibernateJpaDialect" /><!-- 用于指定一些高级特性 -->
@@ -168,7 +168,7 @@
 	<jpa:repositories base-package="com.xie.springcase.jpa.dao" repository-impl-postfix="Impl"
 		entity-manager-factory-ref="entityManagerFactory" transaction-manager-ref="jpaTransactionManager" />
 	<!-- JPA end -->
-	
+
 	<!-- Transaction start -->
 	<!-- hibernate4 事务代理
 	<bean id="hiberateTransactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
@@ -198,6 +198,17 @@
 	<!-- 启用 annotation事务
     <tx:annotation-driven transaction-manager="jpaTransactionManager"/> -->
 	<!-- Transaction end -->
+
+	<!-- ehcache -->
+	<bean id="ehcacheManager" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+		<property name="configLocation"><value>classpath:ehcache.xml</value></property>
+		<property name="shared" value="true"/><!-- 由于hibernate也使用了Ehcache, 保证双方都使用同一个缓存管理器 -->
+	</bean>
+	<!-- 配置一个简单的缓存工厂bean对象
+	<bean id="simpleCache" class="org.springframework.cache.ehcache.EhCacheFactoryBean">
+		<property name="cacheManager" ref="ehcacheManager" />
+		<property name="cacheName" value="demoCache" />
+	</bean> -->
 
 	<!-- 通过component-scan自动装载Bean，简化配置
 	<context:component-scan base-package="com.xie.springcase.script" /> -->

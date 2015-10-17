@@ -1,43 +1,49 @@
 <ehcache>
-  <!-- <diskStore path="java.io.tmpdir|d:\\myapp\\cache|/tmp/ehcachedata/"/> -->
-  <diskStore path="/tmp/ehcachedata/springcase/"/>
- 	<defaultCache         
- 			maxElementsInMemory="10000" 
+    <!-- <diskStore path="java.io.tmpdir|d:\\myapp\\cache|/tmp/ehcachedata/"/> -->
+    <diskStore path="/tmp/ehcachedata/springcase/"/>
+    <defaultCache
+            maxElementsInMemory="10000"
             eternal="false"
-            timeToIdleSeconds="300" 
+            timeToIdleSeconds="300"
             timeToLiveSeconds="600"
-            overflowToDisk="true" 
+            overflowToDisk="true"
+            maxElementsOnDisk="10000000"
             diskPersistent="false"
             diskExpiryThreadIntervalSeconds="120"
-            memoryStoreEvictionPolicy = "LFU" 
-        />
+            memoryStoreEvictionPolicy="LFU"/>
 
-<!-- 
-<cache name = "SimplePageCachingFilter" 
+    <cache name="org.hibernate.cache.spi.UpdateTimestampsCache"
+           maxElementsInMemory="5000"
+           eternal="true"
+           overflowToDisk="true"/>
 
-           maxElementsInMemory = "10000" 
-           maxElementsOnDisk = "10000" 
-           eternal = "false" 
-           overflowToDisk = "true" 
-           diskSpoolBufferSizeMB = "20" 
-           timeToIdleSeconds = "10" 
-           timeToLiveSeconds = "10" 
-           memoryStoreEvictionPolicy = "LFU" 
-
-            />
- -->
-
+    <cache name="org.hibernate.cache.internal.StandardQueryCache"
+           maxElementsInMemory="10000"
+           eternal="false"
+           timeToLiveSeconds="120"
+           overflowToDisk="true"/>
+    <!--
+            配置自定义缓存
+            maxElementsInMemory：缓存中允许创建的最大对象数
+            eternal：缓存中对象是否为永久的，如果是，超时设置将被忽略，对象从不过期。
+            timeToIdleSeconds：缓存数据的钝化时间，也就是在一个元素消亡之前，
+                        两次访问时间的最大时间间隔值，这只能在元素不是永久驻留时有效，
+                        如果该值是 0 就意味着元素可以停顿无穷长的时间。
+            timeToLiveSeconds：缓存数据的生存时间，也就是一个元素从构建到消亡的最大时间间隔值，
+                        这只能在元素不是永久驻留时有效，如果该值是0就意味着元素可以停顿无穷长的时间。
+            overflowToDisk：内存不足时，是否启用磁盘缓存。
+            memoryStoreEvictionPolicy：缓存满了之后的淘汰算法。
+    -->
+    <!--
+    java文件注解查找cache方法名的策略：如果不指定java文件注解中的region="ehcache.xml中的name的属性值",
+    则使用name名为com.package.bean的cache(即类的全路径名称), 如果不存在与类名匹配的cache名称, 则用 defaultCache
+    如果User包含set集合, 则需要另行指定其cache, 例如User包含citySet集合, 则也需要添加配置到ehcache.xml中
+    <cache name="javaClassName"
+           maxElementsInMemory="2000"
+           eternal="false"
+           timeToIdleSeconds="120"
+           timeToLiveSeconds="120"
+           overflowToDisk="true"/>
+    -->
 
 </ehcache>
-<!-- 
-
- 
-SimplePageCachingFilter 是缓存的名字，
-maxElementsInMemory 表示内存中SimplePageCachingFilter 缓存中元素的最大数量为10 ，
-maxElementsOnDisk 是指持久化该缓存的元素到硬盘上的最大数量也为10 （），
-eternal=false 意味着该缓存会死亡。overflowToDisk=true 
-意思是表示当缓存中元素的数量超过限制时，就把这些元素持久化到硬盘，如果overflowToDisk 是false ，
-那么maxElementsOnDisk 的设置就没有什么意义了。
-memoryStoreEvictionPolicy=LFU 是指按照缓存的hit 值来清除，
-也就是说缓存满了之后，新的对象需要缓存时，将会将缓存中hit 值最小的对象清除出缓存，给新的对象腾出地方来了（文章最后有ehcache 中自带的3 种缓存清空策略的介绍）。
--->

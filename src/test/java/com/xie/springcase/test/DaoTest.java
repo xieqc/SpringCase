@@ -2,6 +2,8 @@ package com.xie.springcase.test;
 
 import java.util.List;
 
+import com.google.protobuf.InvalidProtocolBufferException;
+import com.xie.javacase.protobuf.AddressBookProbuf;
 import com.xie.springcase.jpa.dao.*;
 import com.xie.springcase.script.ICalculator;
 import com.xie.springcase.service.*;
@@ -153,6 +155,28 @@ public class DaoTest {
 
 	@Test
 	public void protobufTest() {
+		AddressBookProbuf.Person.Builder personBuilder = AddressBookProbuf.Person.newBuilder();
+		personBuilder.setId(1);
+		personBuilder.setName("testName");
+		personBuilder.setEmail("test@email.com");
+		personBuilder.addPhone(AddressBookProbuf.Person.PhoneNumber.newBuilder().setNumber("131111111").setType(AddressBookProbuf.Person.PhoneType.MOBILE));
+		personBuilder.addPhone(AddressBookProbuf.Person.PhoneNumber.newBuilder().setNumber("011111").setType(AddressBookProbuf.Person.PhoneType.HOME));
+
+		AddressBookProbuf.Person person = personBuilder.build();
+		byte[] personBuf = person.toByteArray();
+
+		try {
+			AddressBookProbuf.Person person2 = AddressBookProbuf.Person.parseFrom(personBuf);
+			System.out.println(person2.getName() + ", " + person2.getEmail());
+			List<AddressBookProbuf.Person.PhoneNumber> lstPhones = person2.getPhoneList();
+			for (AddressBookProbuf.Person.PhoneNumber phoneNumber : lstPhones) {
+				System.out.println(phoneNumber.getNumber());
+			}
+		} catch (InvalidProtocolBufferException e) {
+			e.printStackTrace();
+		}
+
+		System.out.println(personBuf);
 
 	}
 }

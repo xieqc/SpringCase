@@ -39,7 +39,14 @@ public class SysUserController {
             if(bindingResult.hasErrors()) {
                 return "/login";
             }
-            SecurityUtils.getSubject().login(new UsernamePasswordToken(user.getName(),user.getPassword()));
+            UsernamePasswordToken token = new UsernamePasswordToken(user.getName(),user.getPassword());
+                String accountId = token.getPrincipal().toString();
+                String password = token.getCredentials().toString();
+            SecurityUtils.getSubject().login(token);
+                SecurityUtils.getSubject().getSession().setAttribute("password",password);
+                accountId = SecurityUtils.getSubject().getPrincipal().toString();
+                password = SecurityUtils.getSubject().getSession().getAttribute("password").toString();
+//                SecurityUtils.getSubject().isPermitted("");
             return "redirect:/user";
         } catch (AuthenticationException e) {
             redirectAttributes.addFlashAttribute("message","用户名或密码错误！");

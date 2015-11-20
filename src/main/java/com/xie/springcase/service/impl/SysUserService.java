@@ -1,5 +1,6 @@
 package com.xie.springcase.service.impl;
 
+import com.xie.springcase.annotation.DateLog;
 import com.xie.springcase.hibernate.entity.SysUser;
 import com.xie.springcase.service.ISysUserService;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,7 @@ public class SysUserService implements ISysUserService {
     @Resource(name="JSysUserDAO")
     public com.xie.springcase.jpa.dao.SysUserDAO j_sysUserDAO;
 
+    @DateLog(type = "login", description = "登录")
     @Transactional(readOnly = true)
     public SysUser findByName(String name) {
         return j_sysUserDAO.findByName(name);

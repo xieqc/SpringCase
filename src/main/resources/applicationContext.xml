@@ -215,4 +215,18 @@
 
 	<!-- 配置动态加载的Bean，基于Spring的Resource支持，可从网络或本地文件获取Groovy代码 -->
 	<lang:groovy id="calculator" refresh-check-delay="2000" script-source="classpath:groovy/Calculator.groovy" />
+
+	<aop:aspectj-autoproxy/>
+	<bean id="logAspect" class="com.xie.springcase.aop.LogAspect"/>
+	<aop:config>
+		<aop:aspect ref="logAspect">
+			<aop:pointcut id="logPointCut" expression="execution(* com.xie.springcase.service..*(..))"/>
+			<!--
+			(execution(* com.xie.springcase.service.impl.*.*Service.add*(..)))
+                or (execution(* com.xie.springcase.service.impl.*.*Service.update*(..)))
+                or (execution(* com.xie.springcase.service.impl.*.*Service.delete*(..)))
+			-->
+			<aop:after pointcut-ref="logPointCut" method="doSystemLog"/>
+		</aop:aspect>
+	</aop:config>
 </beans>

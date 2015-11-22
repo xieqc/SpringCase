@@ -8,7 +8,7 @@ import java.lang.annotation.*;
 @Target({ElementType.PARAMETER, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface DateLog {
+public @interface DataLog {
     String type() default "";
     String description() default "";
 }

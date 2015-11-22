@@ -218,15 +218,20 @@
 
 	<aop:aspectj-autoproxy/>
 	<bean id="logAspect" class="com.xie.springcase.aop.LogAspect"/>
+	<!-- 配置业务数据日志切面 -->
 	<aop:config>
 		<aop:aspect ref="logAspect">
-			<aop:pointcut id="logPointCut" expression="execution(* com.xie.springcase.service..*(..))"/>
-			<!--
-			(execution(* com.xie.springcase.service.impl.*.*Service.add*(..)))
-                or (execution(* com.xie.springcase.service.impl.*.*Service.update*(..)))
-                or (execution(* com.xie.springcase.service.impl.*.*Service.delete*(..)))
-			-->
-			<aop:after pointcut-ref="logPointCut" method="doSystemLog"/>
+			<aop:pointcut id="datalogPointCut" expression="@annotation(com.xie.springcase.annotation.DataLog)"/>
+			<aop:after pointcut-ref="datalogPointCut" method="doDateLog"/>
+			<!--<aop:after-throwing pointcut-ref="datalogPointCut" method="doThrowing" throwing="ex"/>-->
+		</aop:aspect>
+	</aop:config>
+	<!-- 配置系统日志切面 -->
+	<aop:config>
+		<aop:aspect ref="logAspect">
+			<aop:pointcut id="syslogPointCut" expression="execution(* com.xie.springcase.service..*(..))"/>
+			<aop:around pointcut-ref="syslogPointCut" method="doAround"/>
+			<aop:after-throwing pointcut-ref="syslogPointCut" method="doThrowing" throwing="ex"/>
 		</aop:aspect>
 	</aop:config>
 </beans>

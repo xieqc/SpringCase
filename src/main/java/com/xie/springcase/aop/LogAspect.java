@@ -4,9 +4,14 @@ import com.xie.springcase.annotation.DataLog;
 import com.xie.springcase.util.JackSonParser;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+import org.apache.shiro.SecurityUtils;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.After;
+import org.aspectj.lang.annotation.AfterThrowing;
+import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
@@ -17,6 +22,7 @@ import java.util.Set;
 /**
  * Created by xieqinchao on 15-11-20.
  */
+@Component
 @Aspect
 public class LogAspect {
     private static Logger logger = Logger.getLogger(LogAspect.class);
@@ -30,6 +36,7 @@ public class LogAspect {
     private static final String bigDecimalClass = "class java.math.BigDecimal";
     private static final String stringClass = "class java.lang.String";
 
+    @After("@annotation(com.xie.springcase.annotation.DataLog)")
     public void doDateLog(JoinPoint point) throws Throwable {
         String methodName = point.getSignature().getName();
         Class[] paramClasses = new Class[point.getArgs().length];
@@ -79,11 +86,12 @@ public class LogAspect {
             if (hasAnnotation) {
                 DataLog annotation = method.getAnnotation(DataLog.class);
                 String methodDescp = annotation.type() + annotation.description();
-                System.out.println(methodDescp + "," + paramVal.toString());
+                System.out.println(methodDescp + "," + paramVal.toString() + (SecurityUtils.getSubject().getPrincipal()!=null?","+SecurityUtils.getSubject().getPrincipal().toString():""));
             }
         }
     }
 
+    @Around("execution(* com.xie.springcase.service..*(..))")
     public Object doAround(ProceedingJoinPoint pjp) throws Throwable {
         long time = System.currentTimeMillis();
         Object retVal = pjp.proceed();
@@ -92,6 +100,7 @@ public class LogAspect {
         return retVal;
     }
 
+    @AfterThrowing(pointcut = "execution(* com.xie.springcase.service..*(..))",throwing="ex")
     public void doThrowing(JoinPoint jp, Throwable ex) {
         logger.error(jp.getTarget().getClass().getName() + "中的" + jp.getSignature().getName() + "方法抛出" + ex.getClass().getName() + "异常,");
         if (jp.getArgs() != null && jp.getArgs().length > 0) {

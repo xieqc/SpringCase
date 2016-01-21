@@ -1,15 +1,22 @@
 package com.xie.springcase.test;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.xie.javacase.protobuf.AddressBookProbuf;
+import com.xie.springcase.hibernate.entity.Employee;
 import com.xie.springcase.jpa.dao.*;
 import com.xie.springcase.script.ICalculator;
 import com.xie.springcase.service.*;
+import com.xie.springcase.util.JackSonParser;
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.Element;
+import org.json.JSONObject;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -17,6 +24,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
 import com.xie.springcase.hibernate.dao.IEmployeeDAO;
+
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class DaoTest {
     public static ApplicationContext ac = new ClassPathXmlApplicationContext(new String[]{"applicationContext.xml"});
@@ -179,4 +190,25 @@ public class DaoTest {
 		System.out.println(personBuf);
 
 	}
+
+	@Test
+	public void mockSimpleTest() {
+		LinkedList mockedList = mock(LinkedList.class);
+		// 使用mock的对象
+		mockedList.add("no_1");
+		mockedList.clear();
+		// 验证add()和clear()行为是否发生
+		verify(mockedList).add("no_1");
+		verify(mockedList).clear();
+		// 模拟获取第一个元素时，返回字符串first
+		when(mockedList.get(0)).thenReturn("first");
+		// 此时打印输出first
+		System.out.println(mockedList.get(0));
+
+		EmployeeDAO employeeDao = mock(EmployeeDAO.class);
+		when(employeeDao.findById("100001").getName()).thenReturn("中");
+
+		System.out.println(employeeDao.findById("100001").getName());
+	}
+
 }

@@ -55,12 +55,14 @@ public class XLServerHandler extends ChannelHandlerAdapter {
 //        f.addListener(ChannelFutureListener.CLOSE);
 		// Send the received message to all channels but the current one.
 		System.out.println(NettyServer.allChannels.size());
-		for (Channel c: NettyServer.allChannels) {
+		/*
+        for (Channel c: NettyServer.allChannels) {
 			if (c != ctx.channel()) {
 				System.out.println("other:"+response.getValues());
 				c.writeAndFlush(response);
 			}
 		}
+		*/
     }
 
     @Override

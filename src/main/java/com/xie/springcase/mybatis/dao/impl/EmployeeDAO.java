@@ -7,9 +7,4 @@ import com.xie.springcase.mybatis.domain.Employee;
 
 @Repository("BEmployeeDAO")
 public class EmployeeDAO extends BaseDAO<Employee> implements IEmployeeDAO {
-	
-	protected EmployeeDAO() {
-		super(new Employee());
-	}
-
 }

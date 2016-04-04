@@ -20,13 +20,43 @@ import com.xie.springcase.mybatis.utils.BeanUtils;
 public abstract class BaseDAO<T> implements IBaseDAO<T> {
 	@Autowired(required = true)
 	protected SqlSession sqlSessionTemplate;
-	
-	protected T claz;
-	protected String entityName;
-	
-	protected BaseDAO(T claz) {
-		this.entityName = claz.getClass().getSimpleName();
-		this.claz = claz;
+
+	public static final String SQLNAME_SEPARATOR = ".";
+
+	/**
+	 * @fields sqlNamespace SqlMapping命名空间
+	 */
+	private String sqlNamespace = getDefaultSqlNamespace();
+
+	/**
+	 * 获取泛型类型的实体对象类全名
+	 */
+	protected String getDefaultSqlNamespace() {
+		Class<?> genericClass = BeanUtils.getGenericClass(this.getClass());
+		return genericClass == null ? null : genericClass.getName();
+	}
+
+	/**
+	 * 获取SqlMapping命名空间
+	 */
+	public String getSqlNamespace() {
+		return sqlNamespace;
+	}
+
+	/**
+	 * 设置SqlMapping命名空间。 以改变默认的SqlMapping命名空间，不能滥用此方法随意改变SqlMapping命名空间。
+	 */
+	public void setSqlNamespace(String sqlNamespace) {
+		this.sqlNamespace = sqlNamespace;
+	}
+
+	/**
+	 * 将SqlMapping命名空间与给定的SqlMapping名组合在一起。
+	 * @param sqlName SqlMapping名
+	 * @return 组合了SqlMapping命名空间后的完整SqlMapping名
+	 */
+	protected String getSqlName(String sqlName) {
+		return sqlNamespace + SQLNAME_SEPARATOR + sqlName;
 	}
 	
 	public Long selectCount() {
@@ -72,7 +102,7 @@ public abstract class BaseDAO<T> implements IBaseDAO<T> {
 	public void insert(T entity) {
 		Assert.notNull(entity);
 		try {
-			sqlSessionTemplate.insert("insert", entity);
+			sqlSessionTemplate.insert(getSqlName("insert"), entity);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

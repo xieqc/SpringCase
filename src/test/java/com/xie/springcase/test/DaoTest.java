@@ -1,6 +1,7 @@
 package com.xie.springcase.test;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -54,16 +55,16 @@ public class DaoTest {
 
     @Test
     public void batisTest() {
-        /* insert
+        /* insert */
         com.xie.springcase.mybatis.domain.Employee employee = new com.xie.springcase.mybatis.domain.Employee();
-		employee.setId("100023");
+		employee.setId("100034");
 		employee.setName("mybatis");
 		employee.setBirthday(new Date());
 		employee.setResume("个人简历");
 		employee.setStatus((byte)1);
-		employeeService.batisSave(employee); */
-        /* delete
-        b_employeeDao.deleteById("100022"); */
+		employeeService.b_save(employee);
+        /* delete */
+        b_employeeDao.deleteById("100034");
 //		System.out.println(b_employeeDao.selectOne(employee).getName());
         /* query */
         PageRequest pageable = new PageRequest(1, 5);

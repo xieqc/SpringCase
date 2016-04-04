@@ -174,15 +174,15 @@
 	<bean id="hiberateTransactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean> -->
-	<!-- mybatis 事务代理
+	<!-- mybatis 事务代理 -->
 	<bean id="mybatisTransactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="dataSource_HikariCP"/>
-	</bean> -->
+	</bean>
 	<!-- jpa 事务代理 -->
 	<bean id="jpaTransactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
 		<property name="entityManagerFactory" ref="entityManagerFactory" />
 	</bean>
-	<tx:advice id="txAdvice" transaction-manager="jpaTransactionManager">
+	<tx:advice id="txAdvice" transaction-manager="mybatisTransactionManager">
 		<tx:attributes>
 			<tx:method name="*" propagation="REQUIRED" />
 			<tx:method name="get*" propagation="REQUIRED" read-only="true" />

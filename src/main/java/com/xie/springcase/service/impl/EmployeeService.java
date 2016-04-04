@@ -26,4 +26,9 @@ public class EmployeeService implements IEmployeeService {
 	public Employee j_save(Employee employee) {
 		return j_employeeDAO.save(employee);
 	}
+
+	@Transactional(readOnly=false)
+	public void b_save(com.xie.springcase.mybatis.domain.Employee employee) {
+		b_employeeDAO.insert(employee);
+	}
 }

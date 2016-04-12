@@ -22,6 +22,10 @@
            eternal="false"
            timeToLiveSeconds="120"
            overflowToDisk="true"/>
+
+    <cache name="demoCache" maxElementsInMemory="10000" eternal="false"
+           timeToLiveSeconds="1" overflowToDisk="false"
+           memoryStoreEvictionPolicy="LRU" />
     <!--
             配置自定义缓存
             maxElementsInMemory：缓存中允许创建的最大对象数

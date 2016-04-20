@@ -455,6 +455,18 @@
             <artifactId>zkclient</artifactId>
             <version>0.8</version>
         </dependency>
+        <!-- httpClient -->
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.5.2</version>
+        </dependency>
+        <!-- mongodb -->
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-mongodb</artifactId>
+            <version>1.8.4.RELEASE</version>
+        </dependency>
     </dependencies>
 
     <build>

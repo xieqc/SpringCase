@@ -25,6 +25,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
 import com.xie.springcase.hibernate.dao.IEmployeeDAO;
+import org.springframework.data.mongodb.core.MongoTemplate;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -46,6 +47,7 @@ public class DaoTest {
     public static ISysFunctService sysFunctService = (ISysFunctService) ac.getBean("sysFunctService");
 	public static ICalculator calculator = (ICalculator) ac.getBean("calculator");
 	public static CacheManager ehcacheManager = (CacheManager) ac.getBean("ehcacheManager");
+	private MongoTemplate mongoTemplate = (MongoTemplate) ac.getBean("mongoTemplate");
 
     @Test
     public void hibernateTest() {
@@ -210,6 +212,23 @@ public class DaoTest {
 		when(employeeDao.findById("100001").getName()).thenReturn("中");
 
 		System.out.println(employeeDao.findById("100001").getName());
+	}
+
+	@Test
+	public void mongoDBTest() {
+		Employee employee = new Employee();
+		employee.setId("100003");
+		employee.setName("王五");
+		employee.setBirthday(new Date());
+		employee.setStatus((byte)1);
+		/* insert */
+		mongoTemplate.insert(employee);
+		/* remove
+		mongoTemplate.remove(employee);*/
+		/* find */
+		List<Employee> list = mongoTemplate.findAll(Employee.class);
+		System.out.println(list.size());
+
 	}
 
 }

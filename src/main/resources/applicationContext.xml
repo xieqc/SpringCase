@@ -3,7 +3,7 @@
 	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:tx="http://www.springframework.org/schema/tx"
 	xmlns:jpa="http://www.springframework.org/schema/data/jpa" xmlns:lang="http://www.springframework.org/schema/lang"
-	xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xmlns:dubbo="http://code.alibabatech.com/schema/dubbo" xmlns:mongo="http://www.springframework.org/schema/data/mongo"
 	xsi:schemaLocation="
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
@@ -12,7 +12,8 @@
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
 		http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
 		http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang.xsd
-		http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd"
+		http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd
+		http://www.springframework.org/schema/data/mongo http://www.springframework.org/schema/data/mongo/spring-mongo.xsd"
 		default-autowire="byName" default-lazy-init="true">
 
 	<description>Spring公共配置</description>
@@ -237,10 +238,31 @@
 		</aop:aspect>
 	</aop:config>
 
-	<!-- 提供方应用名称信息，这个相当于起一个名字，我们dubbo管理页面比较清晰是哪个应用暴露出来的 -->
-	<dubbo:application name="dubbo_provider"></dubbo:application>
-	<!-- 使用zookeeper注册中心暴露服务地址 -->
-	<dubbo:registry address="zookeeper://127.0.0.1:2181" check="false" subscribe="false" register=""></dubbo:registry>
-	<!-- 要暴露的服务接口 -->
-	<dubbo:service interface="com.xie.springcase.service.TestRegistryService" ref="testRegistryService" />
+	<!-- 提供方应用名称信息，这个相当于起一个名字，我们dubbo管理页面比较清晰是哪个应用暴露出来的
+	<dubbo:application name="dubbo_provider"></dubbo:application> -->
+	<!-- 使用zookeeper注册中心暴露服务地址
+	<dubbo:registry address="zookeeper://127.0.0.1:2181" check="false" subscribe="false" register=""></dubbo:registry> -->
+	<!-- 要暴露的服务接口
+	<dubbo:service interface="com.xie.springcase.service.TestRegistryService" ref="testRegistryService" /> -->
+
+	<!-- mongodb -->
+	<context:property-placeholder location="classpath:/mongo.properties"/>
+	<mongo:mongo host="${mongo.host}" port="${mongo.port}">
+		<mongo:options
+				connections-per-host="${mongo.connectionsPerHost}"
+				threads-allowed-to-block-for-connection-multiplier="${mongo.threadsAllowedToBlockForConnectionMultiplier}"
+				connect-timeout="${mongo.connectTimeout}"
+				max-wait-time="${mongo.maxWaitTime}"
+				auto-connect-retry="${mongo.autoConnectRetry}"
+				socket-keep-alive="${mongo.socketKeepAlive}"
+				socket-timeout="${mongo.socketTimeout}"
+				slave-ok="${mongo.slaveOk}"
+				write-number="1"
+				write-timeout="0"
+				write-fsync="true"/>
+	</mongo:mongo>
+	<mongo:db-factory dbname="${mongo.db}" mongo-ref="mongo" username="${mongo.username}" password="${mongo.password}" />
+	<bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
+		<constructor-arg name="mongoDbFactory" ref="mongoDbFactory"/>
+	</bean>
 </beans>

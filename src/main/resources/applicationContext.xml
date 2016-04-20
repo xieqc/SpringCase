@@ -4,6 +4,7 @@
 	xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:tx="http://www.springframework.org/schema/tx"
 	xmlns:jpa="http://www.springframework.org/schema/data/jpa" xmlns:lang="http://www.springframework.org/schema/lang"
 	xmlns:dubbo="http://code.alibabatech.com/schema/dubbo" xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+	xmlns:p="http://www.springframework.org/schema/p"
 	xsi:schemaLocation="
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
@@ -245,7 +246,7 @@
 	<!-- 要暴露的服务接口
 	<dubbo:service interface="com.xie.springcase.service.TestRegistryService" ref="testRegistryService" /> -->
 
-	<!-- mongodb -->
+	<!-- spring data mongodb -->
 	<context:property-placeholder location="classpath:/mongo.properties"/>
 	<mongo:mongo host="${mongo.host}" port="${mongo.port}">
 		<mongo:options
@@ -265,4 +266,19 @@
 	<bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
 		<constructor-arg name="mongoDbFactory" ref="mongoDbFactory"/>
 	</bean>
+
+	<!-- spring data redis -->
+	<bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
+		<property name="maxTotal" value="${redis.pool.maxTotal}"/>
+		<property name="maxIdle" value="${redis.pool.maxIdle}"/>
+		<property name="minIdle" value="${redis.pool.minIdle}"/>
+		<property name="maxWaitMillis" value="${redis.pool.maxWaitMillis}"/>
+		<property name="testOnBorrow" value="${redis.pool.testOnBorrow}"/>
+		<property name="testOnReturn" value="${redis.pool.testOnReturn}"/>
+	</bean>
+	<bean id="jedisConnFactory_db-master" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"
+		  p:host-name='${redis.db-master.host-name}' p:port='${redis.db-master.port}' p:use-pool="true"  p:database="${redis.db-master.db}" p:password="${redis.db-master.pass}" p:poolConfig-ref="jedisPoolConfig"/>
+	<bean id="stringSerializer" class="org.springframework.data.redis.serializer.StringRedisSerializer"></bean>
+	<bean id="redisTemplate_db-master" class="org.springframework.data.redis.core.RedisTemplate" p:connection-factory-ref="jedisConnFactory_db-master" p:defaultSerializer-ref="stringSerializer"/>
+
 </beans>

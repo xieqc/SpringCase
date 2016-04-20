@@ -26,6 +26,7 @@ import org.springframework.data.domain.PageRequest;
 
 import com.xie.springcase.hibernate.dao.IEmployeeDAO;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.redis.core.RedisTemplate;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -48,6 +49,7 @@ public class DaoTest {
 	public static ICalculator calculator = (ICalculator) ac.getBean("calculator");
 	public static CacheManager ehcacheManager = (CacheManager) ac.getBean("ehcacheManager");
 	private MongoTemplate mongoTemplate = (MongoTemplate) ac.getBean("mongoTemplate");
+	private RedisTemplate<String, String> redisTemplate_dbmaster = (RedisTemplate<String, String>) ac.getBean("redisTemplate_db-master");
 
     @Test
     public void hibernateTest() {
@@ -229,6 +231,12 @@ public class DaoTest {
 		List<Employee> list = mongoTemplate.findAll(Employee.class);
 		System.out.println(list.size());
 
+	}
+
+	@Test
+	public void RedisTest() {
+		Long countNum = redisTemplate_dbmaster.opsForHash().increment("server:count","countNum",1);
+		System.out.println(countNum);
 	}
 
 }

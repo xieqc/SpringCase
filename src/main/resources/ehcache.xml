@@ -1,4 +1,4 @@
-<ehcache>
+<ehcache updateCheck="false">
     <!-- <diskStore path="java.io.tmpdir|d:\\myapp\\cache|/tmp/ehcachedata/"/> -->
     <diskStore path="/tmp/ehcachedata/springcase/"/>
     <defaultCache

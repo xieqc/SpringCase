@@ -308,6 +308,11 @@
             <artifactId>mybatis-ehcache</artifactId>
             <version>1.0.3</version>
         </dependency>
+        <dependency>
+            <groupId>org.shardbatis</groupId>
+            <artifactId>shardbatis</artifactId>
+            <version>2.0.0B</version>
+        </dependency>
         <!-- spring data jpa -->
         <dependency>
             <groupId>org.springframework.data</groupId>

@@ -277,8 +277,8 @@
 		<property name="testOnReturn" value="${redis.pool.testOnReturn}"/>
 	</bean>
 	<bean id="jedisConnFactory_db-master" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"
-		  p:host-name='${redis.db-master.host-name}' p:port='${redis.db-master.port}' p:use-pool="true"  p:database="${redis.db-master.db}" p:password="${redis.db-master.pass}" p:poolConfig-ref="jedisPoolConfig"/>
+		  p:hostName='${redis.db-master.host-name}' p:port='${redis.db-master.port}' p:usePool="true"  p:database="${redis.db-master.db}" p:password="${redis.db-master.pass}" p:poolConfig-ref="jedisPoolConfig"/>
 	<bean id="stringSerializer" class="org.springframework.data.redis.serializer.StringRedisSerializer"></bean>
-	<bean id="redisTemplate_db-master" class="org.springframework.data.redis.core.RedisTemplate" p:connection-factory-ref="jedisConnFactory_db-master" p:defaultSerializer-ref="stringSerializer"/>
+	<bean id="redisTemplate_db-master" class="org.springframework.data.redis.core.RedisTemplate" p:connectionFactory-ref="jedisConnFactory_db-master" p:defaultSerializer-ref="stringSerializer"/>
 
 </beans>

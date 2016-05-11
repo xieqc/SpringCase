@@ -61,7 +61,7 @@
         <property name="maxIdleTime" value="${jdbc.maxIdleTime}"/>
         <!-- 当连接池中的连接耗尽的时候c3p0一次同时获取的连接数. Default:3-->
         <property name="acquireIncrement" value="${jdbc.acquireIncrement}"/>
-        <!-- JDBC的标准,用以控制数据源内加载的PreparedStatements数量。  
+        <!-- JDBC的标准,用以控制数据源内加载的PreparedStatements数量。
         但由于预缓存的statements属于单个connection而不是整个连接池所以设置这个参数需要考虑到多方面的因数.如果maxStatements与maxStatementsPerConnection均为0,则缓存被关闭。Default:0-->
         <property name="maxStatements" value="${jdbc.maxStatements}"/>
 	</bean>
@@ -111,14 +111,19 @@
 	<!-- Hibernate end -->
 
 	<!-- Mybatis start -->
-	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+	<bean id="batisSqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource_HikariCP" />
 		<property name="configLocation" value="classpath:sqlMapConfig.xml"></property>
 		<property name="mapperLocations" value="classpath:mybatis/mapper/**/*Mapper.xml"></property>
 	</bean>
 	<!-- 配置SQLSession模板 -->
 	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
-		<constructor-arg index="0" ref="sqlSessionFactory" />
+		<constructor-arg index="0" ref="batisSqlSessionFactory" />
+	</bean>
+	<!-- -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.xie.*.mybatis.mapper"/>
+		<property name="sqlSessionFactoryBeanName" value="batisSqlSessionFactory" />
 	</bean>
 	<!-- Mybatis end -->
 

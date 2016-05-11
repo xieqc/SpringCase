@@ -16,6 +16,8 @@ import java.util.List;
 public class SysUserService implements ISysUserService {
     @Resource(name="JSysUserDAO")
     public com.xie.springcase.jpa.dao.SysUserDAO j_sysUserDAO;
+    @Resource(name="BSysUserDAO")
+    public com.xie.springcase.mybatis.dao.ISysUserDAO b_sysUserDAO;
 
     @DataLog(type = "login", description = "登录")
     @Transactional(readOnly = true)
@@ -27,6 +29,11 @@ public class SysUserService implements ISysUserService {
     @Transactional(readOnly = false)
     public SysUser save(SysUser user) {
         return j_sysUserDAO.save(user);
+    }
+
+    @Transactional(readOnly = false)
+    public void b_save(com.xie.springcase.mybatis.domain.SysUser user) {
+        b_sysUserDAO.insert(user);
     }
 
     @DataLog(type = "query", description = "查询")

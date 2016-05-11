@@ -14,4 +14,6 @@ public interface ISysUserService {
     SysUser save(SysUser user);
 
     List<SysUser> findALL();
+
+    void b_save(com.xie.springcase.mybatis.domain.SysUser user);
 }

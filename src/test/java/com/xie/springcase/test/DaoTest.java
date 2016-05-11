@@ -11,6 +11,12 @@ import com.google.protobuf.InvalidProtocolBufferException;
 import com.xie.javacase.protobuf.AddressBookProbuf;
 import com.xie.springcase.hibernate.entity.Employee;
 import com.xie.springcase.jpa.dao.*;
+import com.xie.springcase.jpa.dao.EmployeeDAO;
+import com.xie.springcase.jpa.dao.SysDeptDAO;
+import com.xie.springcase.jpa.dao.SysUserDAO;
+import com.xie.springcase.mybatis.dao.ISysDeptDAO;
+import com.xie.springcase.mybatis.dao.impl.*;
+import com.xie.springcase.mybatis.domain.SysDept;
 import com.xie.springcase.script.ICalculator;
 import com.xie.springcase.service.*;
 import com.xie.springcase.util.JackSonParser;
@@ -38,7 +44,8 @@ public class DaoTest {
     public static com.xie.springcase.mybatis.dao.IEmployeeDAO b_employeeDao = (com.xie.springcase.mybatis.dao.IEmployeeDAO) ac.getBean("BEmployeeDAO");
     public static EmployeeDAO j_employeeDao = (EmployeeDAO) ac.getBean("JEmployeeDAO");
     public static SysDeptDAO j_sysDeptDao = (SysDeptDAO) ac.getBean("JSysDeptDAO");
-    public static SysUserDAO j_sysUserDao = (SysUserDAO) ac.getBean("JSysUserDAO");
+    public static ISysDeptDAO b_sysDeptDao = (com.xie.springcase.mybatis.dao.impl.SysDeptDAO) ac.getBean("BSysDeptDAO");
+	public static SysUserDAO j_sysUserDao = (SysUserDAO) ac.getBean("JSysUserDAO");
     public static SysRoleDAO j_sysRoleDao = (SysRoleDAO) ac.getBean("JSysRoleDAO");
     public static SysFunctDAO j_sysFunctDao = (SysFunctDAO) ac.getBean("JSysFunctDAO");
     public static IEmployeeService employeeService = (IEmployeeService) ac.getBean("employeeService");
@@ -61,20 +68,37 @@ public class DaoTest {
     public void batisTest() {
         /* insert */
         com.xie.springcase.mybatis.domain.Employee employee = new com.xie.springcase.mybatis.domain.Employee();
-		employee.setId("100034");
-		employee.setName("mybatis");
+		employee.setId("100008");
+		employee.setName("张三8");
 		employee.setBirthday(new Date());
 		employee.setResume("个人简历");
 		employee.setStatus((byte)1);
 		employeeService.b_save(employee);
+
+		/*
+		com.xie.springcase.mybatis.domain.SysUser user = new com.xie.springcase.mybatis.domain.SysUser();
+		user.setName("zhangesan");
+		user.setPassword("123456");
+		user.setDeptId(1);
+		user.setEmployeeId("100001");
+		user.setStatus(true);
+		sysUserService.b_save(user); */
+		/*
+		SysDept dept = new SysDept();
+		dept.setName("部门2");
+		dept.setRemark("部门备注");
+		dept.setStatus(true);
+		b_sysDeptDao.insert(dept); */
         /* delete */
-        b_employeeDao.deleteById("100034");
+//        b_employeeDao.deleteById("100034");
 //		System.out.println(b_employeeDao.selectOne(employee).getName());
-        /* query */
+        /* query
         PageRequest pageable = new PageRequest(1, 5);
         Page<com.xie.springcase.mybatis.domain.Employee> pagelist = b_employeeDao.selectPageList(null, pageable);
-        System.out.println(pagelist.getSize());
-
+        System.out.println(pagelist.getSize()); */
+		/*
+		com.xie.springcase.mybatis.domain.Employee employee = employeeService.b_findById("100003");
+		System.out.println(employee.getName()); */
     }
 
     @Test

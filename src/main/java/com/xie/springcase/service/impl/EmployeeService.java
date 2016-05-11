@@ -31,4 +31,8 @@ public class EmployeeService implements IEmployeeService {
 	public void b_save(com.xie.springcase.mybatis.domain.Employee employee) {
 		b_employeeDAO.insert(employee);
 	}
+
+	public com.xie.springcase.mybatis.domain.Employee b_findById(String id) {
+		return b_employeeDAO.selectById(id);
+	}
 }

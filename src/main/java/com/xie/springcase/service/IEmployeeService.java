@@ -9,5 +9,6 @@ public interface IEmployeeService {
 	public Employee j_save(Employee employee);
 
 	void b_save(com.xie.springcase.mybatis.domain.Employee employee);
-	
+
+	com.xie.springcase.mybatis.domain.Employee b_findById(String id);
 }

@@ -16,6 +16,7 @@
     <parseList>
         <!--<value>com.google.code.shardbatis.test.mapper.AppTestMapper.insert</value>-->
         <value>com.xie.springcase.mybatis.domain.Employee.insert</value>
+        <value>com.xie.springcase.mybatis.domain.Employee.selectById</value>
     </parseList>
     <!--
             配置分表策略

@@ -15,11 +15,25 @@ public class ShardStrategyImpl implements ShardStrategy {
      */
     @Override
     public String getTargetTableName(String baseTableName,Object params, String mapperId) {
+        Class<?> type = params.getClass();
+        Boolean isPrimitive = type.isPrimitive();
+
         Integer k = 0;
         if (params !=null) {
-            Employee shardTestBean = (Employee) params;
-            Integer temp = Integer.valueOf(shardTestBean.getId());
-            k= temp % 2;
+            /** 原始类型 */
+            if(isPrimitive){
+
+            }
+
+            /** 引用类型 */
+            if(type == Long.class || type == Integer.class || type == Short.class || type == String.class){
+                Integer temp = Integer.valueOf(params.toString());
+                k= temp % 2;
+            } else if(params instanceof Employee) {
+                Employee shardTestBean = (Employee) params;
+                Integer temp = Integer.valueOf(shardTestBean.getId());
+                k= temp % 2;
+            }
         }
         return baseTableName +"_" + k;
     }

@@ -66,14 +66,14 @@ public class DaoTest {
 
     @Test
     public void batisTest() {
-        /* insert */
+        /* insert
         com.xie.springcase.mybatis.domain.Employee employee = new com.xie.springcase.mybatis.domain.Employee();
 		employee.setId("100008");
 		employee.setName("张三8");
 		employee.setBirthday(new Date());
 		employee.setResume("个人简历");
 		employee.setStatus((byte)1);
-		employeeService.b_save(employee);
+		employeeService.b_save(employee); */
 
 		/*
 		com.xie.springcase.mybatis.domain.SysUser user = new com.xie.springcase.mybatis.domain.SysUser();
@@ -96,9 +96,11 @@ public class DaoTest {
         PageRequest pageable = new PageRequest(1, 5);
         Page<com.xie.springcase.mybatis.domain.Employee> pagelist = b_employeeDao.selectPageList(null, pageable);
         System.out.println(pagelist.getSize()); */
-		/*
-		com.xie.springcase.mybatis.domain.Employee employee = employeeService.b_findById("100003");
-		System.out.println(employee.getName()); */
+		/*  */
+		for(int i=0;i<3; i++) {
+			com.xie.springcase.mybatis.domain.Employee employee = employeeService.b_findById("100003");
+			System.out.println(employee.getName());
+		}
     }
 
     @Test

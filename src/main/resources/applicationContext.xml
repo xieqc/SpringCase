@@ -226,6 +226,7 @@
 	<lang:groovy id="calculator" refresh-check-delay="2000" script-source="classpath:groovy/Calculator.groovy" />
 
 	<aop:aspectj-autoproxy/>
+	<bean id="cacheRegistrar" class="com.xie.springcase.aop.CacheRegistrar"/>
 	<bean id="logAspect" class="com.xie.springcase.aop.LogAspect"/>
 	<!-- 配置业务数据日志切面 -->
 	<aop:config>

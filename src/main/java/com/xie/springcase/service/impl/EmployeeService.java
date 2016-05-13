@@ -2,11 +2,15 @@ package com.xie.springcase.service.impl;
 
 import javax.annotation.Resource;
 
+import com.xie.springcase.annotation.CacheConfig;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.xie.springcase.hibernate.entity.Employee;
 import com.xie.springcase.service.IEmployeeService;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class EmployeeService implements IEmployeeService {
@@ -34,5 +38,13 @@ public class EmployeeService implements IEmployeeService {
 
 	public com.xie.springcase.mybatis.domain.Employee b_findById(String id) {
 		return b_employeeDAO.selectById(id);
+	}
+
+	@CacheConfig(useCache = true,cacheName = "demoCache",keyArgsIndex = "0")
+	public List<String> getCacheTest() {
+		List<String> strList = new ArrayList<String>();
+		strList.add("test1");
+		strList.add("test2");
+		return strList;
 	}
 }

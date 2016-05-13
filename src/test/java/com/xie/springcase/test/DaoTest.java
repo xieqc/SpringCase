@@ -9,6 +9,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.xie.javacase.protobuf.AddressBookProbuf;
+import com.xie.springcase.annotation.CacheConfig;
 import com.xie.springcase.hibernate.entity.Employee;
 import com.xie.springcase.jpa.dao.*;
 import com.xie.springcase.jpa.dao.EmployeeDAO;
@@ -187,13 +188,22 @@ public class DaoTest {
 
 	@Test
 	public void ehcahceTest() {
-		// 添加数据到缓存中
-		ehcacheManager.addCache("demoCache");
+		/* 添加数据到缓存中
+		if(ehcacheManager.getCache("demoCache")==null) {
+			ehcacheManager.addCache("demoCache");
+		}
 		Cache cache = ehcacheManager.getCache("demoCache");
 		Element element = new Element("key", "val");
 		cache.put(element);
-		System.out.println(cache.getSize());
+		System.out.println(cache.getSize()); */
+		/* */
+		for(int i=0;i<3;i++) {
+			System.out.println(employeeService.getCacheTest().size());
+		}
+
 	}
+
+
 
 	@Test
 	public void protobufTest() {

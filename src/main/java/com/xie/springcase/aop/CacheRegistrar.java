@@ -29,7 +29,10 @@ public class CacheRegistrar {
         String cacheKey = buildCacheKey(joinPoint, cacheConfig);
         Object result = null;
         if (useCache) {
-            result = manager.getCache(cacheName).get(cacheKey);
+            Element element = manager.getCache(cacheName).get(cacheKey);
+            if (element!=null) {
+                result = element.getValue();
+            }
         }
         if (result == null) {
             result = joinPoint.proceed();

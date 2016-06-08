@@ -48,6 +48,15 @@
         <url-pattern>/</url-pattern>
     </servlet-mapping>
 
+    <!-- log4j config -->
+    <context-param>
+        <param-name>log4jConfigLocation</param-name>
+        <param-value>classpath:log4j.properties</param-value>
+    </context-param>
+    <listener>
+        <listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
+    </listener>
+
     <!-- 如果spring拦截/所有资源，此配置静态资源不进行拦截(tomcat <servlet-name>default</servlet-name> )
     <servlet-mapping>
       <servlet-name>resin-file</servlet-name>

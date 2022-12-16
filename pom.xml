@@ -9,7 +9,7 @@
     <description>Spring4 Case</description>
 
     <properties>
-        <spring.version>4.1.6.RELEASE</spring.version>
+        <spring.version>5.2.20.RELEASE</spring.version>
         <hibernate.version>4.3.8.Final</hibernate.version>
         <env>dev</env>
     </properties>
